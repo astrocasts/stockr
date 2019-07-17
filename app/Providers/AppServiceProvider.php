@@ -5,7 +5,11 @@ namespace App\Providers;
 use EventSauce\EventSourcing\AggregateRootRepository;
 use EventSauce\EventSourcing\ConstructingAggregateRootRepository;
 use EventSauce\EventSourcing\InMemoryMessageRepository;
+use EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer;
+use EventSauce\EventSourcing\Serialization\MessageSerializer;
+use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Stockr\EventSauce\EventSourcing\DbMessageRepository;
 use Stockr\Model\Catalog\Adapter\EventSauce\EventSauceCatalog;
 use Stockr\Model\Catalog\Catalog;
 use Stockr\Model\Catalog\Item;
@@ -19,12 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(MessageSerializer::class, ConstructingMessageSerializer::class);
         $this->app->singleton(Catalog::class, EventSauceCatalog::class);
         $this->app
             ->when(EventSauceCatalog::class)
             ->needs(AggregateRootRepository::class)
-            ->give(function () {
-                $messageRepository = new InMemoryMessageRepository();
+            ->give(function (Container $container) {
+                $messageRepository = $container->make(DbMessageRepository::class);
 
                 return new ConstructingAggregateRootRepository(
                     Item::class,

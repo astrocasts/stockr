@@ -26,6 +26,11 @@ class ItemId implements AggregateRootId
 
     public static function fromString(string $aggregateRootId): AggregateRootId
     {
+        return new ItemId($aggregateRootId);
+    }
+
+    public static function generate(): AggregateRootId
+    {
         return new ItemId(Str::orderedUuid()->toString());
     }
 }
