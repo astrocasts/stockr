@@ -22,7 +22,7 @@ Let's build a real-world Event Sourced application using Laravel and EventSauce!
 * [x] Create the Laravel project
 * [x] Bring in [EventSauce](https://eventsauce.io)
 * [ ] Write our own Message Repository implementation (based on [eventsauce/doctrine-message-repository](https://github.com/EventSaucePHP/DoctrineMessageRepository))
-* [ ] Bring in [Tactician](https://tactician.thephpleague.com](https://tactician.thephpleague.com/)
+* [ ] Bring in [Tactician](https://tactician.thephpleague.com)
 * [ ] Build a Command Bus
 
 
