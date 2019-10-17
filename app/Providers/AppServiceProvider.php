@@ -30,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(Connection::class, static function () {
+            return \DB::getDoctrineConnection();
+        });
+
         $this->app->when(DbMessageRepository::class)
             ->needs('$tableName')
             ->give('events');
@@ -48,8 +52,7 @@ class AppServiceProvider extends ServiceProvider
                     null,
                     new MessageDecoratorChain(
                         new DefaultHeadersDecorator(),
-                        new class implements MessageDecorator
-                        {
+                        new class implements MessageDecorator {
                             private $aggregateRootType;
 
                             public function __construct(ClassNameInflector $classNameInflector = null)
@@ -64,7 +67,6 @@ class AppServiceProvider extends ServiceProvider
                                     '__aggregate_root_type' => $this->aggregateRootType,
                                 ]);
                             }
-
                         }
                     )
                 );

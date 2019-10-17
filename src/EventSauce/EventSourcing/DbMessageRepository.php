@@ -17,6 +17,11 @@ use Ramsey\Uuid\Uuid;
 class DbMessageRepository implements MessageRepository
 {
     /**
+     * @var Connection;
+     */
+    private $connection;
+
+    /**
      * @var MessageSerializer
      */
     private $messageSerializer;
@@ -32,10 +37,12 @@ class DbMessageRepository implements MessageRepository
     private $tableName;
 
     public function __construct(
+        Connection $connection,
         string $tableName,
         MessageSerializer $messageSerializer,
         int $jsonEncodeOptions = 0
     ) {
+        $this->connection = $connection;
         $this->messageSerializer = $messageSerializer;
         $this->jsonEncodeOptions = $jsonEncodeOptions;
         $this->tableName = $tableName;
@@ -64,7 +71,7 @@ class DbMessageRepository implements MessageRepository
             $aggregateRootVersionColumn = 'aggregate_root_version_' . $index;
             $recordedAtColumn = 'recorded_at' . $index;
             $payloadColumn = 'payload_' . $index;
-            $values[] = "(:{$eventIdColumn}, :{$aggregateRootTypeColumn}, :{$eventTypeColumn}, :{$aggregateRootIdColumn}, 
+            $values[] = "(:{$eventIdColumn}, :{$aggregateRootTypeColumn}, :{$eventTypeColumn}, :{$aggregateRootIdColumn},
             :{$aggregateRootIdTypeColumn}, :{$aggregateRootVersionColumn}, :{$recordedAtColumn}, :{$payloadColumn})";
             $params[$aggregateRootTypeColumn] = $payload['headers']['__aggregate_root_type'];
             $params[$aggregateRootVersionColumn] = $payload['headers'][Header::AGGREGATE_ROOT_VERSION] ?? 0;
@@ -78,9 +85,9 @@ class DbMessageRepository implements MessageRepository
 
         $sql .= join(', ', $values);
 
-        DB::transaction(function () use ($sql, $params) {
-            DB::insert($sql, $params);
-        });
+        $this->connection->beginTransaction();
+        $this->connection->prepare($sql)->execute($params);
+        $this->connection->commit();
     }
 
     protected function baseSql(string $tableName): string
@@ -90,6 +97,5 @@ class DbMessageRepository implements MessageRepository
 
     public function retrieveAll(AggregateRootId $id): Generator
     {
-
     }
 }
