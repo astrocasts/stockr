@@ -8,6 +8,7 @@ use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
 use EventSauce\EventSourcing\AggregateRootId;
 use Stockr\Model\Catalog\Events\Imported;
+use Stockr\Model\Catalog\Events\Renamed;
 
 class Item implements AggregateRoot
 {
@@ -25,6 +26,20 @@ class Item implements AggregateRoot
     }
 
     protected function applyImported(Imported $event)
+    {
+        $this->name = $event->name();
+    }
+
+    public function rename(string $newName): void
+    {
+        if (!$newName === $this->name) {
+            return;
+        }
+
+        $this->recordThat(new Renamed($newName));
+    }
+
+    protected function applyRenamed(Renamed $event)
     {
         $this->name = $event->name();
     }

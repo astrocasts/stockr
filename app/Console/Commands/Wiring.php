@@ -37,6 +37,7 @@ class Wiring extends Command
         //$item = new Item($itemId);
 
         $item = Item::import($itemId, 'First Itemz!');
+        $item->rename('SECOND TIME!');
 
         dump($item);
 

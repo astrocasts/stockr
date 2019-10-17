@@ -2,9 +2,16 @@
 
 namespace App\Providers;
 
+use Doctrine\DBAL\Connection;
 use EventSauce\EventSourcing\AggregateRootRepository;
+use EventSauce\EventSourcing\ClassNameInflector;
 use EventSauce\EventSourcing\ConstructingAggregateRootRepository;
+use EventSauce\EventSourcing\DefaultHeadersDecorator;
+use EventSauce\EventSourcing\DotSeparatedSnakeCaseInflector;
 use EventSauce\EventSourcing\InMemoryMessageRepository;
+use EventSauce\EventSourcing\Message;
+use EventSauce\EventSourcing\MessageDecorator;
+use EventSauce\EventSourcing\MessageDecoratorChain;
 use EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer;
 use EventSauce\EventSourcing\Serialization\MessageSerializer;
 use Illuminate\Container\Container;
@@ -23,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->when(DbMessageRepository::class)
+            ->needs('$tableName')
+            ->give('events');
+
         $this->app->bind(MessageSerializer::class, ConstructingMessageSerializer::class);
         $this->app->singleton(Catalog::class, EventSauceCatalog::class);
         $this->app
@@ -33,7 +44,29 @@ class AppServiceProvider extends ServiceProvider
 
                 return new ConstructingAggregateRootRepository(
                     Item::class,
-                    $messageRepository
+                    $messageRepository,
+                    null,
+                    new MessageDecoratorChain(
+                        new DefaultHeadersDecorator(),
+                        new class implements MessageDecorator
+                        {
+                            private $aggregateRootType;
+
+                            public function __construct(ClassNameInflector $classNameInflector = null)
+                            {
+                                $this->aggregateRootType = ($classNameInflector ?: new DotSeparatedSnakeCaseInflector())
+                                    ->classNameToType(Item::class);
+                            }
+
+                            public function decorate(Message $message): Message
+                            {
+                                return $message->withHeaders([
+                                    '__aggregate_root_type' => $this->aggregateRootType,
+                                ]);
+                            }
+
+                        }
+                    )
                 );
             });
     }
