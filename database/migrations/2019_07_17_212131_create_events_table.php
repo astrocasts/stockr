@@ -19,7 +19,6 @@ class CreateEventsTable extends Migration
             $table->string('event_type'); // class name of the message
             $table->string('aggregate_root_type'); // class name of the aggregate root: eg. Item
             $table->uuid('aggregate_root_id');
-            $table->string('aggregate_root_id_type'); // class name of the aggregate root ID: eg. ItemId
             $table->bigInteger('aggregate_root_version');
             $table->timestampTz('recorded_at');
             $table->jsonb('payload');

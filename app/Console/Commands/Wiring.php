@@ -9,7 +9,7 @@ use Stockr\Model\Catalog\ItemId;
 
 class Wiring extends Command
 {
-    protected $signature = 'wiring';
+    protected $signature = 'wiring {itemId?}';
 
     /**
      * @var Catalog
@@ -30,19 +30,28 @@ class Wiring extends Command
      */
     public function handle()
     {
-        /** @var ItemId $itemId */
-        $itemId = ItemId::generate();
+       if ($itemId = $this->argument('itemId')) {
+            $item = $this->catalog->findItem(ItemId::fromString($itemId));
 
-        // TODO --- not public constructor
-        //$item = new Item($itemId);
+            $item->rename(random_int(0, 150));
 
-        $item = Item::import($itemId, 'First Itemz!');
-        $item->rename('SECOND TIME!');
+            dump($item);
 
-        dump($item);
+            $this->catalog->saveItem($item);
 
-        $this->catalog->saveItem($item);
+            dump($item);
+        } else {
+            /** @var ItemId $itemId */
+            $itemId = ItemId::generate();
 
-        dump($item);
+            $item = Item::import($itemId, 'First Itemz!');
+            $item->rename('SECOND TIME!');
+
+            dump($item);
+
+            $this->catalog->saveItem($item);
+
+            dump($item);
+        }
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use DB;
 use Doctrine\DBAL\Connection;
 use EventSauce\EventSourcing\AggregateRootRepository;
 use EventSauce\EventSourcing\ClassNameInflector;
 use EventSauce\EventSourcing\ConstructingAggregateRootRepository;
 use EventSauce\EventSourcing\DefaultHeadersDecorator;
 use EventSauce\EventSourcing\DotSeparatedSnakeCaseInflector;
-use EventSauce\EventSourcing\InMemoryMessageRepository;
 use EventSauce\EventSourcing\Message;
 use EventSauce\EventSourcing\MessageDecorator;
 use EventSauce\EventSourcing\MessageDecoratorChain;
@@ -30,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Connection::class, static function () {
-            return \DB::getDoctrineConnection();
-        });
-
         $this->app->when(DbMessageRepository::class)
             ->needs('$tableName')
             ->give('events');

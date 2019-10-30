@@ -21,8 +21,11 @@ Let's build a real-world Event Sourced application using Laravel and EventSauce!
 
 * [x] Create the Laravel project
 * [x] Bring in [EventSauce](https://eventsauce.io)
-* [ ] Write our own Message Repository implementation (based on [eventsauce/doctrine-message-repository](https://github.com/EventSaucePHP/DoctrineMessageRepository))
-* [ ] Bring in [Tactician](https://tactician.thephpleague.com)
+* [x] Write our own Message Repository implementation (based on [eventsauce/doctrine-message-repository](https://github.com/EventSaucePHP/DoctrineMessageRepository))
+  * [x] [`DB::getDoctrineConnection()`](https://github.com/astrocasts/stockr/pull/1) (thanks @phcostabh!)
+  * [ ] [Laravel and Doctrine DBAL Transactions do not play nicely with each other...](https://gist.github.com/simensen/3bb6aa09c6250946a816147c839467c9)
+  * [x] Remove Aggregate Root ID Type column
+* [ ] Bring in [Tactician](https://tactician.thephpleague.com) (v2)
 * [ ] Build a Command Bus
 
 
