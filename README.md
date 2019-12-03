@@ -23,10 +23,20 @@ Let's build a real-world Event Sourced application using Laravel and EventSauce!
 * [x] Bring in [EventSauce](https://eventsauce.io)
 * [x] Write our own Message Repository implementation (based on [eventsauce/doctrine-message-repository](https://github.com/EventSaucePHP/DoctrineMessageRepository))
   * [x] [`DB::getDoctrineConnection()`](https://github.com/astrocasts/stockr/pull/1) (thanks @phcostabh!)
-  * [ ] [Laravel and Doctrine DBAL Transactions do not play nicely with each other...](https://gist.github.com/simensen/3bb6aa09c6250946a816147c839467c9)
+  * [ ] ~~[Laravel and Doctrine DBAL Transactions do not play nicely with each other...](https://gist.github.com/simensen/3bb6aa09c6250946a816147c839467c9)~~
   * [x] Remove Aggregate Root ID Type column
-* [ ] Bring in [Tactician](https://tactician.thephpleague.com) (v2)
 * [ ] Build a Command Bus
+  * [x] `dispatch($className, array $payload = [])`
+  * [ ] `RecordOnlyCommandBus` for Testing
+  * [ ] Command Validation
+    * [x] Required Fields
+    * [ ] Allowed Fields
+* [ ] Bring in [Tactician](https://tactician.thephpleague.com) (v2)
+  * [x] `TacticianCommandBus` for actual usage
+  * [ ] [Locking Middleware and Laravel Provider for Tactician 2.x](https://gist.github.com/simensen/2d4abd3461521a77ac4913215f9dba37) (gist)
+    * [x] Laravel Provider
+    * [ ] Locking Middelware
+* [ ] Build Command Audit Logging  into the Command Bus
 
 
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dac466e06cf5b5e13e9f81d891d788c2",
+    "content-hash": "786b2a1d237f38e1e55679b9f32796f5",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1031,6 +1031,99 @@
                 "storage"
             ],
             "time": "2019-06-18T20:09:29+00:00"
+        },
+        {
+            "name": "league/tactician",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/tactician.git",
+                "reference": "76232dee7fe8b2b9cf9ce14a35b8e761e2fd2bc7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/tactician/zipball/76232dee7fe8b2b9cf9ce14a35b8e761e2fd2bc7",
+                "reference": "76232dee7fe8b2b9cf9ce14a35b8e761e2fd2bc7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "league/container": "^3.3",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.11.12",
+                "phpstan/phpstan-phpunit": "^0.11.2",
+                "phpunit/phpunit": "^8.2",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Tactician\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ross Tuck",
+                    "homepage": "http://tactician.thephpleague.com"
+                }
+            ],
+            "description": "A small, flexible command bus. Handy for building service layers.",
+            "keywords": [
+                "command",
+                "command bus",
+                "service layer"
+            ],
+            "time": "2019-09-20T07:07:35+00:00"
+        },
+        {
+            "name": "matthiasnoback/convenient-immutability",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/convenient-immutability.git",
+                "reference": "15a1916ffe5c085216802932ce3287d368fcdbc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/convenient-immutability/zipball/15a1916ffe5c085216802932ce3287d368fcdbc0",
+                "reference": "15a1916ffe5c085216802932ce3287d368fcdbc0",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "ramsey/uuid": "^3.1",
+                "satooshi/php-coveralls": "^1.0",
+                "symfony/form": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ConvenientImmutability\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Noback",
+                    "email": "matthiasnoback@gmail.com"
+                }
+            ],
+            "description": "Make objects initially inconsistent, yet eventually immutable",
+            "time": "2017-04-02T15:34:00+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5024,7 +5117,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "league/tactician": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -14,6 +14,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "league/tactician": "dev-master",
+        "matthiasnoback/convenient-immutability": "^0.2.1",
         "moontoast/math": "^1.1"
     },
     "require-dev": {
