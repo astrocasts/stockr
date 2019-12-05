@@ -6,7 +6,7 @@ namespace Stockr\CommandBus;
 
 use ConvenientImmutability\Immutable;
 
-class Command
+abstract class Command
 {
     use Immutable;
 
@@ -57,14 +57,19 @@ class Command
         return $this->payload;
     }
 
-    public static function validate(array $payload = []): bool
+    public static function validate(array $payload = []): array
     {
-        foreach (static::$REQUIRED_FIELDS as $requiredField) {
-            if (! array_key_exists($requiredField, $payload)) {
-                return false;
-            }
+        $payloadKeys = array_keys($payload);
+
+        if (count($missingFields = array_diff(static::$REQUIRED_FIELDS, $payloadKeys)) > 0) {
+            throw InvalidPayload::missingRequiredFields(...$missingFields);
         }
 
-        return true;
+        $keysToRemove = array_diff($payloadKeys, static::$REQUIRED_FIELDS, static::$ALLOWED_FIELDS);
+        foreach ($keysToRemove as $key) {
+            unset($payload[$key]);
+        }
+
+        return $payload;
     }
 }

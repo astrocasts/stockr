@@ -27,10 +27,14 @@ Let's build a real-world Event Sourced application using Laravel and EventSauce!
   * [x] Remove Aggregate Root ID Type column
 * [ ] Build a Command Bus
   * [x] `dispatch($className, array $payload = [])`
-  * [ ] `RecordOnlyCommandBus` for Testing
-  * [ ] Command Validation
+  * [ ] `RecordOnlyCommandBus` for testing with the Command Bus ([gist](https://gist.github.com/simensen/7d1847f766716a7f0d0f4cfa51b59440))
+  * [x] Command Validation
     * [x] Required Fields
-    * [ ] Allowed Fields
+    * [x] Allowed Fields
+  * [ ] Testing the Command Bus
+    * [ ] Command Bus
+    * [x] Command
+  * [ ] Testing with the Command Bus
 * [ ] Bring in [Tactician](https://tactician.thephpleague.com) (v2)
   * [x] `TacticianCommandBus` for actual usage
   * [ ] [Locking Middleware and Laravel Provider for Tactician 2.x](https://gist.github.com/simensen/2d4abd3461521a77ac4913215f9dba37) (gist)

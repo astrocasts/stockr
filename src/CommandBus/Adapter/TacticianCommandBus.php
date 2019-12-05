@@ -23,10 +23,7 @@ class TacticianCommandBus implements CommandBus
     public function dispatch(string $className, array $payload = []): void
     {
         /** @var Command $className */
-        if (! $className::validate($payload)) {
-            throw new \RuntimeException('Invalid payload');
-        };
-
+        $payload = $className::validate($payload);
 
         /** @var Command $className */
         /** @var Command $command */
