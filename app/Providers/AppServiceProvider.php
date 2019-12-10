@@ -16,6 +16,7 @@ use EventSauce\EventSourcing\Serialization\ConstructingMessageSerializer;
 use EventSauce\EventSourcing\Serialization\MessageSerializer;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
+use Stockr\EventSauce\EventSourcing\AggregateRootRepositoryFactory;
 use Stockr\EventSauce\EventSourcing\DbMessageRepository;
 use Stockr\Model\Catalog\Adapter\EventSauce\EventSauceCatalog;
 use Stockr\Model\Catalog\Catalog;
@@ -36,37 +37,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(MessageSerializer::class, ConstructingMessageSerializer::class);
         $this->app->singleton(Catalog::class, EventSauceCatalog::class);
-        $this->app
-            ->when(EventSauceCatalog::class)
-            ->needs(AggregateRootRepository::class)
-            ->give(function (Container $container) {
-                $messageRepository = $container->make(DbMessageRepository::class);
-
-                return new ConstructingAggregateRootRepository(
-                    Item::class,
-                    $messageRepository,
-                    null,
-                    new MessageDecoratorChain(
-                        new DefaultHeadersDecorator(),
-                        new class implements MessageDecorator {
-                            private $aggregateRootType;
-
-                            public function __construct(ClassNameInflector $classNameInflector = null)
-                            {
-                                $this->aggregateRootType = ($classNameInflector ?: new DotSeparatedSnakeCaseInflector())
-                                    ->classNameToType(Item::class);
-                            }
-
-                            public function decorate(Message $message): Message
-                            {
-                                return $message->withHeaders([
-                                    '__aggregate_root_type' => $this->aggregateRootType,
-                                ]);
-                            }
-                        }
-                    )
-                );
-            });
     }
 
     /**
